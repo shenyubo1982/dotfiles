@@ -1,0 +1,186 @@
+" autocmd BufWritePost ~/.vim/vimrc source ~/.vim/vimrc
+set nocompatible	" Use Vim defaults instead of 100% vi compatibility
+
+" set number
+set rnu
+set cursorline
+set showmatch
+
+
+" 添加python3路径
+let g:python3_host_prog='/opt/homebrew/bin/python3'
+
+call plug#begin('~/.vim/plugged')
+Plug 'kien/ctrlp.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'morhetz/gruvbox'
+Plug 'easymotion/vim-easymotion'
+Plug 'Yggdroot/indentLine'
+Plug 'mhinz/vim-startify'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'wakatime/vim-wakatime'
+" go-plug
+Plug 'majutsushi/tagbar'
+Plug 'vim-scripts/SuperTab'
+Plug 'ianva/vim-youdao-translater'
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'dgryski/vim-godef'
+Plug 'fatih/vim-go', { 'tag': '*' }
+
+
+" Plug 'prettier/vim-prettier', {'do': 'yarn install --frozen-lockfile --production','for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+" Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production'  }
+call plug#end()
+
+" packloadall
+
+
+
+"nerdcommenter: 批量注释。
+"用法：通过键入 
+"\cc可以对某行进行注释，使用 3\cc则可以注释包含光标所在行往下三行的内容， 3\ci切换对应行的注释状态
+let mapleader = " "
+" 默认情况下，在注释分隔符后添加空格
+let g:NERDSpaceDelims = 1
+" 对美化的多行注释使用压缩语法(貌似这个没什么卵用)
+let g:NERDCompactSexyComs = 1
+" 按行对齐注释分隔符左对齐，而不是按代码缩进
+" 默认情况下，将语言设置为使用其备用分隔符（不是很明白所以忽略）
+let g:NERDAltDelims_java = 1
+" 添加您自己的自定义格式或覆盖默认格式（你懂的）
+let g:NERDCustomDelimiters = { 'php': { 'left': '/*','right': '*/' },'html': { 'left': '<!--','right': '-->' },'py': { 'left': '#' },'sh': { 'left': '#' } }
+" 允许注释和反转空行（在注释区域时很有用） （没亲测）
+let g:NERDCommentEmptyLines = 1
+" 取消注释时启用尾随空白的修剪
+let g:NERDTrimTrailingWhitespace = 1
+" 启用nerdcommenttoggle检查是否对所有选定行进行了注释
+let g:NERDToggleCheckAllLines = 1
+
+" NERDTree 配置
+nmap tt :NERDTreeMirror<CR>
+nmap tt :NERDTreeToggle<CR>
+" nmap <F3>:NERDTreeMirror<CR>
+" nmap <F3>:NERDTreeToggle<CR>
+" autocmd vimenter * NERDTree  "自动开启Nerdtree
+"let g:NERDTreeWinSize = 25 "设定 NERDTree 视窗大小
+"开启/关闭nerdtree快捷键
+" map <C-f> :NERDTreeToggle<CR>
+" let NERDTreeShowBookmarks=1  " 开启Nerdtree时自动显示Bookmarks
+"打开vim时如果没有文件自动打开NERDTree
+" autocmd vimenter * if !argc()|NERDTree|endif
+"当NERDTree为剩下的唯一窗口时自动关闭
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"设置树的显示图标
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+" let NERDTreeIgnore = ['\.pyc$']  " 过滤所有.pyc文件不显示
+"let g:NERDTreeShowLineNumbers=1  " 是否显示行号
+" let g:NERDTreeHidden=0     "不显示隐藏文件
+"Making it prettier
+" let NERDTreeMinimalUI = 1
+" let NERDTreeDirArrows = 1
+
+
+
+" fzf 快捷键
+nmap ff :Files<CR>
+
+nmap fb :Buffers<CR>
+
+" gruvbox setting
+colorscheme gruvbox
+set background=dark
+
+" easymotion 
+nmap ss <Plug>(easymotion-s2)
+
+"airline
+" let g:airline_powerline_fonts = 1
+let g:airline_theme='bubblegum'
+
+" Yggdroot/indentline
+let g:indentLine_setColors = 0
+let g:indentLine_defaultGroup = 'SpecialKey'
+"let g:indentLine_enabled = 0
+"let g:indentLine_color_term = 239
+
+
+" y/d/x/p已经能和ctrl-c 、ctrl-v一个效果了：
+" set clipboard=unnamed
+vmap <C-c> "+y
+" vmap <C-v> "+p
+
+" 有道 translater config
+vnoremap <silent> <C-T> :<C-u>Ydv<CR>
+nnoremap <silent> <C-T> :<C-u>Ydc<CR>
+noremap <leader>yd :<C-u>Yde<CR>
+
+" markdwon 的快捷键
+map <silent> <F5> <Plug>MarkdownPreview
+map <silent> <F6> <Plug>StopMarkdownPreview
+
+
+" coc 配置
+" Use <Tab> and <S-Tab> to navigate the completion list
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" " Use <Ctrl-F> to format documents with prettier
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" noremap <C-F> :Prettier<CR>
+
+" prettier configuration
+command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+
+
+
+source ~/.vim/cocvimrc
+
+
+" It orks without any configuration, but you might want to look into the documentation for further customization:
+" vim-startify
+" :h startify
+" :h startify-faq
+"设置书签
+let g:startify_bookmarks = [
+            \ '~/.vim/vimrc',
+            \ '~/.zshrc',
+            \ '~/.config/neofetch/config.conf',
+            \ '~/.tmux.conf.local',
+            \ '~/.tmux.conf',
+            \ '~/.vim/cocvimrc',
+	    \ '~/mygit/mac-config/myAlias.zsh',
+	    \ '~/Toolkits/shellToolkits',
+          \]
+"起始页显示的列表长度
+let g:startify_files_number = 20
+"自动加载session
+let g:startify_session_autoload = 1
+"过滤列表，支持正则表达式
+let g:startify_skiplist = [
+       \ '^/tmp',
+       \ ]
+"自定义Header和Footer
+let g:startify_custom_header = [
+	    \ '+------------------------------+',
+	    \ '|                              |',
+	    \ '|    Still waters run deep!    |',
+	    \ '|                              |',
+	    \ '+----------------+-------------+',
+	    \]
+
+let g:startify_custom_footer = [
+            \ '+------------------------------+',
+            \ '|     Keep an open mind!       |',
+            \ '+----------------+-------------+',
+            \]
+
+" source ~/.vim/vimrc 
+
