@@ -227,3 +227,5 @@ alias zshrcUpdate='source ~/.zshrc'
 alias aliastest='echo "alias Loadiing Successed!"'
 # mac mini 外网穿透代理
 alias frps.status='systemctl status frps.service'
+alias frps.config='vi /opt/frp/frps.ini'
+alias frps.restart='systemctl restart frps.service'
